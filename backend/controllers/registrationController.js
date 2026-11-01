@@ -94,10 +94,7 @@ const getMyRegistrations = async (req, res) => {
 
 const deleteRegistration = async (req, res) => {
   try {
-    const registration = await Registration.findOneAndDelete({
-      _id: req.params.id,
-      student: req.user.id,
-    });
+    const registration = await Registration.findByIdAndDelete(req.params.id);
 
     if (!registration) {
       return res.status(404).json({

@@ -2,24 +2,22 @@ const User = require("../models/User");
 const Activity = require("../models/Activity");
 const Registration = require("../models/Registration");
 const Attendance = require("../models/Attendance");
-const Certificate = require("../models/Certificate");
 const Announcement = require("../models/Announcement");
 const Feedback = require("../models/Feedback");
 
 const getStats = async (req, res) => {
   try {
-    const [students, faculty, activities, publishedActivities, registrations, attendance, certificates, announcements, feedback] = await Promise.all([
+    const [students, faculty, activities, publishedActivities, registrations, attendance, announcements, feedback] = await Promise.all([
       User.countDocuments({ role: "student" }),
       User.countDocuments({ role: "faculty" }),
       Activity.countDocuments(),
       Activity.countDocuments({ status: "published" }),
       Registration.countDocuments({ status: "registered" }),
       Attendance.countDocuments(),
-      Certificate.countDocuments(),
       Announcement.countDocuments(),
       Feedback.countDocuments(),
     ]);
-    res.json({ stats: { students, faculty, activities, publishedActivities, registrations, attendance, certificates, announcements, feedback } });
+    res.json({ stats: { students, faculty, activities, publishedActivities, registrations, attendance, announcements, feedback } });
   } catch (error) {
     console.error("Get admin stats error:", error);
     res.status(500).json({ message: "Server error while loading statistics" });
@@ -53,15 +51,14 @@ const updateUser = async (req, res) => {
 
 const getRecords = async (req, res) => {
   try {
-    const [attendance, certificates, feedback, registrations, activities, announcements] = await Promise.all([
+    const [attendance, feedback, registrations, activities, announcements] = await Promise.all([
       Attendance.find().populate("student", "name email studentId").populate("activity", "title date").sort({ createdAt: -1 }),
-      Certificate.find().populate("student", "name email studentId").populate("activity", "title date").sort({ issuedAt: -1 }),
       Feedback.find().populate("student", "name email studentId").populate("activity", "title date").sort({ createdAt: -1 }),
       Registration.find().populate("student", "name email studentId").populate("activity", "title date venue").sort({ registeredAt: -1 }),
       Activity.find().sort({ createdAt: -1 }),
       Announcement.find().populate("createdBy", "name role").sort({ createdAt: -1 }),
     ]);
-    res.json({ attendance, certificates, feedback, registrations, activities, announcements });
+    res.json({ attendance, feedback, registrations, activities, announcements });
   } catch (error) {
     console.error("Get admin records error:", error);
     res.status(500).json({ message: "Server error while loading records" });

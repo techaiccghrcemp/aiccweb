@@ -6,9 +6,9 @@ const User = require("./models/User");
 dotenv.config();
 
 const users = [
-  { name: "Demo Student", email: "test@student.com", password: "123456", role: "student", studentId: "EK-STU-001", department: "Computer Science", year: 3 },
-  { name: "EventKatta Faculty", email: "faculty@eventkatta.com", password: "Faculty@123", role: "faculty" },
-  { name: "EventKatta Admin", email: "admin@eventkatta.com", password: "Admin@123", role: "admin" },
+  { name: "Demo Student", email: "test@student.com", password: "123456", role: "student", studentId: "AICC-STU-001", department: "Computer Science", year: 3 },
+  { name: "AICC Club Faculty", email: "faculty@aicc.com", password: "Faculty@123", role: "faculty" },
+  { name: "AICC Club Admin", email: "admin@aicc.com", password: "Admin@123", role: "admin" },
 ];
 
 const seed = async () => {
